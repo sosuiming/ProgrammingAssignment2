@@ -1,7 +1,9 @@
 ## Put comments here that give an overall description of what your
 ## functions do
+## The functions calculate the inverse of matrix and cache the result.
 
 ## Write a short comment describing this function
+## The first function creates an object to store the calculated inverse of matrix.
 
 makeCacheMatrix <- function(x = matrix())
 {
@@ -19,16 +21,22 @@ makeCacheMatrix <- function(x = matrix())
 
 
 ## Write a short comment describing this function
+## The second one checks whether the inverse of the object is already calculated.
+## If yes, the stored value is returned; otherwise, the inverse is calculated, stored and returned.
 
 cacheSolve <- function(x, ...)
 {
     ## Return a matrix that is the inverse of 'x'
-    cx = makeCacheMatrix(x)
-    if (is.null(cx$getinverse()))
+    m <- x$getinverse()
+    if (!is.null(m))
     {
-        cx$setinverse(solve(x))
+        message("getting cached data")
+        return(m)
     }
-    cx$getinverse()
+    data <- x$get()
+    m <- solve(data)
+    x$setinverse(m)
+    m
 }
 
 nx <- 3
@@ -40,9 +48,8 @@ x = c(2,1,1,3,2,1,2,1,2)
 dim(x) <- c(nx, ny)
 dimnames(x) <- list(row_names, col_names)
 
-xi = c(3,-1,-1,-4,2,1,-1,0,1)
-dim(xi) <- c(nx, ny)
-dimnames(xi) <- list(row_names, col_names)
+cx = makeCacheMatrix()
+cx$set(x)
 
-y = cacheSolve(x)
-z = cacheSolve(x)
+y = cacheSolve(cx)
+z = cacheSolve(cx)
